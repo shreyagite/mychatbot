@@ -1,39 +1,57 @@
 import streamlit as st
-import math
 
-# 1. Setup the Page
-st.set_page_config(page_title="Engineering Chatbot", page_icon="🚀")
-st.title("🤖 Technical Assistant Bot")
-st.write("Welcome! I can chat with you or help you calculate projectile motion.")
+# 1. Page Styling
+st.set_page_config(page_title="Simple Math & Joke Bot")
+st.title("🤖 My Friendly Helper Bot")
 
-# 2. The Chat Interface
-user_name = st.text_input("First, what is your name?", "Student")
-st.write(f"Hello {user_name}! Type a message or use the calculator below.")
+# 2. The Chatbot's Opening Line
+st.write("### Hello! How can I help you today?")
 
-# 3. Physics/Math Section (Equations)
-st.divider()
-st.header("🚀 Projectile Trajectory Calculator")
-st.write("Let's calculate the horizontal range using the formula:")
-st.latex(r"R = \frac{v^2 \sin(2\theta)}{g}")
+# 3. Choose your path: Math, Jokes, or Chat
+option = st.selectbox("What would you like to do?", ["Choose an option", "Solve Math", "Tell me a Joke", "Just Chat"])
 
-# Input fields for the equation
-v = st.number_input("Enter Initial Velocity (v) in m/s:", value=10.0)
-angle_deg = st.slider("Select Launch Angle (θ) in degrees:", 0, 90, 45)
-g = 9.81  # Acceleration due to gravity
+# 4. Simple If-Else Logic
+if option == "Solve Math":
+    st.subheader("Basic Calculator")
+    num1 = st.number_input("Enter first number:", value=0.0)
+    num2 = st.number_input("Enter second number:", value=0.0)
+    operation = st.radio("Choose operation:", ["Add", "Subtract", "Multiply", "Divide"])
 
-# Calculations
-angle_rad = math.radians(angle_deg)
-range_r = (v**2 * math.sin(2 * angle_rad)) / g
+    if st.button("Calculate"):
+        if operation == "Add":
+            st.success(f"Result: {num1 + num2}")
+        elif operation == "Subtract":
+            st.success(f"Result: {num1 - num2}")
+        elif operation == "Multiply":
+            st.success(f"Result: {num1 * num2}")
+        elif operation == "Divide":
+            if num2 != 0:
+                st.success(f"Result: {num1 / num2}")
+            else:
+                st.error("You cannot divide by zero!")
 
-# 4. Display the Result
-st.success(f"The total horizontal range is: *{range_r:.2f} meters*")
+elif option == "Tell me a Joke":
+    st.subheader("Time for a Laugh! 😂")
+    if st.button("Click for a Joke"):
+        # Simple if-else for random-ish jokes
+        import random
+        jokes = [
+            "Why did the student throw his clock out the window? He wanted to see time fly!",
+            "Why don't scientists trust atoms? Because they make up everything!",
+            "Parallel lines have so much in common. It’s a shame they’ll never meet.",
+            "What do you call a fake noodle? An Impasta!"
+        ]
+        st.info(random.choice(jokes))
 
-# 5. Simple Chat Logic
-user_message = st.text_input("Ask me something else:")
-if user_message:
-    if "hello" in user_message.lower():
-        st.write("Hi there! Ready to solve some more equations?")
-    elif "physics" in user_message.lower():
-        st.write("Physics is great! We can add more formulas like $F = ma$ later.")
-    else:
-        st.write("That sounds interesting! I am still learning, but I can help with math.")
+elif option == "Just Chat":
+    user_msg = st.text_input("Type your message here:")
+    if user_msg:
+        if "hello" in user_msg.lower():
+            st.write("Hi there! I'm your AI assistant.")
+        elif "how are you" in user_msg.lower():
+            st.write("I'm running smoothly on the cloud! How are you?")
+        else:
+            st.write("That's interesting! I'm still a simple bot, but I'm learning.")
+
+elif option == "Choose an option":
+    st.write("Please select an activity from the dropdown menu above.")
